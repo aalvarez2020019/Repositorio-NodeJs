@@ -6,7 +6,7 @@ mongoose.connect('mongodb://localhost:27017/SucursalesDeEmpresas', { useNewUrlPa
     console.log("Se encuentra conectado a la base de datos.");
 
     app.listen(3000, function () {
-        console.log("Hola IN6BM, esta corriendo en el puerto 3000!")
+        console.log("Hola, esta base de datos SucursalesDeEmpresas se encuentra corriendo en el puerto 3600 ")
     })
 
 }).catch(error => console.log(error));
