@@ -1,0 +1,15 @@
+/* You can add global styles to this file, and also import other style files */
+/*body {
+  heigh:665px;
+  background-image: url("https://www.dreamhost.com/blog/wp-content/uploads/2018/09/elements-web-design-opt-1-750x498.jpg");
+  background-repeat: repeat-y;
+  background-size: 101rem;
+}*/
+
+
+
+
+body{
+  background-image: linear-gradient(to top,  rgba(71, 71, 80, 0.4) 0%, rgba(57, 57, 59, 0.4) 100%), url(../src/assets/img/fondoDos.png) !important;
+  background-size: cover !important;
+}

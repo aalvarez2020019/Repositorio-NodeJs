@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    </head>
+  <br>
+  <br>
+
+    <body>
+        <main class ="pt-4">
+            <div class = "container align-items-center col-12 col-md-4">
+                <div class="modal-header bg-black text-white d-flex justify-content-center">
+                    <h5 class="modal-title text-center" id="exampleModalLabel">Registrar</h5>
+                </div>
+
+                <form  class=" bg-dark container py4 pb-4 rounded  align-content-center was-validated">
+                  <div class="mb-3 pt-4">
+                    <label for="user"  class="form-label text-white"><i class="fas fa-user"></i>  Correo electronico:</label>
+                    <input type="text" class="form-control" name="user" id="user" required>
+                  </div>
+
+                    <div class="mb-3">
+                        <label for="pass"  class="form-label text-white"><i class="fas fa-unlock-alt"></i>   Contraseña:</label>
+                        <input type="password" class="form-control" name="pass" id="pass" required>
+                    </div>
+
+                    <input type="hidden" name="accion" value="validar">
+                    <div class="modal-footer d-flex justify-content-center">
+                        <button type="submit" class="btn btn-danger py-3 rounded-pill"> Registrar</button>
+                    </div>
+
+
+                </form>
+            </div>
+        </main>
+
+    </body>
+</html>
+
