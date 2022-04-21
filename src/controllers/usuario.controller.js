@@ -28,6 +28,10 @@ function obtenerEmpresas(req, res) {
 // OBTENER EMPRESAS ID
 function ObtenerEmpresasId(req, res) {
 
+  if (req.user.rol !== "ROL_ADMIN") {
+    return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
+  }
+  
   var idEmpresa = req.params.idEmpresa
 
   Usuarios.findById(idEmpresa, (err, empresaEncontrada) => {

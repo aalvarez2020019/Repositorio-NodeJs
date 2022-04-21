@@ -1,6 +1,43 @@
 /* CONTROLADOR SUCURSALES */
 const Sucursales = require('../models/sucursales.model');
 
+// Obtener Sucursales
+function ObtenerSucursales(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
+    Sucursales.find({ idEmpresa: req.user.sub }, (error, encontrarSucursales) => {
+
+        if (error) return res.status(500).send({ error: "Error para ver las sucursales" });
+
+        if (encontrarSucursales.length == 0)
+
+          return res.status(500).send({ error: "No posee ninguna sucursal" });
+
+        return res.status(200).send({ SUCURSALES: encontrarSucursales});
+      }
+    ).populate("empresa");
+  }
+
+// Obtener Sucursales Id
+function ObtenerSucursalesId(req, res){
+
+    var idSucu = req.params.idSucursal;
+ 
+    Sucursales.findOne({_id : idSucu, idEmpresa : req.user.sub}, (err, obtenerSucursales) => {
+
+        if(err) return res.status(500).send({ mensaje: "Error en la peticion" });
+
+        if(!obtenerSucursales) return res.status(500).send({ mensaje: "no se pueden visualizar las sucursales de esa empresa"});
+
+        return res.status(200).send({ SUCURSALES: obtenerSucursales }
+            );
+    }
+    )
+}
+
 // Agregar Sucursales
 function AgregarSucursales(req, res) {
     var parametros = req.body;
@@ -72,26 +109,7 @@ function EliminarSucursales(req, res) {
     );
 }
 
-// BUSCAR SUCURSALES
-function ObtenerSucursales (req, res) {
-    Sucursales.find((err, sucursalesObtenidas) => {
-        if (err) return res.send({ mensaje: "Error: " + err })
 
-        return res.send({ sucursales: sucursalesObtenidas })
-    })
-}
-
-// BUSCAR SUCURSALES POR ID
-function ObtenerSucursalesId(req, res) {
-    var idEmpr = req.params.idSucursal;
- 
-    Sucursales.findById(idEmpr, (err, sucursalesEncontradas) => {
-        if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
-        if (!sucursalesEncontradas) return res.status(404).send( { mensaje: 'Error al obtener los datos' });
-
-        return res.status(200).send({ sucursal: sucursalesEncontradas });
-    })
-}
 
 module.exports={
  

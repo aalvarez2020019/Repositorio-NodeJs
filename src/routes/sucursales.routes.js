@@ -12,9 +12,11 @@ api.put("/editarSucursal/:idSucursal", md_autenticacion.Auth, sucursalesControla
 // ELIMINAR SUCURSAL
 api.delete('/eliminarSucursales/:idSucursal', md_autenticacion.Auth, sucursalesControlador.EliminarSucursales);
 
+// OBTENER SUCURSALES
+api.get("/obtenerSucursales", md_autenticacion.Auth, sucursalesControlador.ObtenerSucursales);
 
-api.get('/obtenerSucursales', sucursalesControlador.ObtenerSucursales);
-api.get('/obtenerSucursalesId/:idSucursal', sucursalesControlador.ObtenerSucursales);
+// OBTENER SUCURSALES ID
+api.get('/obtenerIdSucursal/:idSucursal', md_autenticacion.Auth, sucursalesControlador.ObtenerSucursalesId);
 
 
 
