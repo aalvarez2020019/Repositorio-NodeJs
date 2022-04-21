@@ -4,6 +4,45 @@ const Usuarios = require('../models/usuarios.model');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
+// OBTENER EMPRESAS
+function obtenerEmpresas(req, res) {
+
+  if (req.user.rol !== "ROL_ADMIN") {
+    return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
+  }
+
+  Usuarios.find((error, verEmpresas) => {
+
+    if (error) return res.status(500).send({ error: "Error en la petición." });
+
+    if (verEmpresas.length == 0) {
+
+      return res.status(500).send({ error: "No existe ninguna empresa." });
+
+    } else {
+      return res.status(200).send({ EMPRESAS: verEmpresas });
+    }
+  });
+}
+
+// OBTENER EMPRESAS ID
+function ObtenerEmpresasId(req, res) {
+
+  var idEmpresa = req.params.idEmpresa
+
+  Usuarios.findById(idEmpresa, (err, empresaEncontrada) => {
+
+      if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+      if (!empresaEncontrada) return res.status(404).send({ mensaje: 'No se obtienen los datos' });
+
+      return res.status(200).send({ EMPRESAS: empresaEncontrada }
+        );
+  })
+}
+
+
+
+
 
     // USUARIO POR DEFECTO
     function registrarAdmin() {
@@ -127,7 +166,7 @@ const jwt = require('../services/jwt');
           }
         );
       } else {
-        return res.status(500).send({ mensaje: "Error, el correo no se encuentra registrado." });
+        return res.status(500).send({ mensaje: "Error, el usuario no se encuentra registrado." });
       }
     });
   }
@@ -181,10 +220,15 @@ const jwt = require('../services/jwt');
   }
 
 
+
+
 module.exports = {
     registrarAdmin,
     Login,
     registrarEmpresas,
     EditarEmpresa,
-    EliminarEmpresas
+    EliminarEmpresas,
+    obtenerEmpresas,
+    ObtenerEmpresasId
+
 }

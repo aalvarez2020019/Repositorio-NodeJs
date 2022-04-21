@@ -12,6 +12,7 @@ api.put("/editarSucursal/:idSucursal", md_autenticacion.Auth, sucursalesControla
 // ELIMINAR SUCURSAL
 api.delete('/eliminarSucursales/:idSucursal', md_autenticacion.Auth, sucursalesControlador.EliminarSucursales);
 
+
 api.get('/obtenerSucursales', sucursalesControlador.ObtenerSucursales);
 api.get('/obtenerSucursalesId/:idSucursal', sucursalesControlador.ObtenerSucursales);
 
