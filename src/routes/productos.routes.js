@@ -4,8 +4,10 @@ const md_autenticacion = require('../middlewares/autenticacion');
 
 const api = express.Router();
 
-api.post('/agregar', productoController.agregarProductos);
-api.get('/obtener', productoController.obtenerProductos);
+api.post('/agregarProductos', md_autenticacion.Auth, productoController.agregarProductos);
+api.get('/obtenerProductos', md_autenticacion.Auth, productoController.obtenerProductos);
+
+
 /*
 api.get('/empresas/:idEmpresa', empresaControlador.ObtenerEmpresasId);
 api.put('/editarEmpresas/:idEmpresa', empresaControlador.EditarEmpresas);

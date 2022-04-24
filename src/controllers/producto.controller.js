@@ -2,12 +2,27 @@ var Producto = require('../models/productos.model');
 var fs = require('fs');
 var path = require('path');
 
+// OBTENER PRODUCTOS
+function obtenerProductos(req, res) {
 
+    Producto.find({ empresa: req.user.sub }, (err, sucursalEmpresaEncontrada) => {
+  
+      return res.status(200).send({ Sucursales: sucursalEmpresaEncontrada })
+    })
+  
+  }
+
+// AGREGAR PRODUCTOS
 function agregarProductos(req, res) {
-    var empresaID = req.user.sub
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
+    var empresaID = req.user.sub;
     var params = req.body;
 
-    
+
     if (req.user.rol === 'ROL_EMPRESA') {
 
         if (params.nombre) {
@@ -29,7 +44,7 @@ function agregarProductos(req, res) {
                     productoModel.save((err, productoGuardado) => {
                         if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
                         if (productoGuardado) {
-                            res.status(220).send({ productoGuardado });
+                            res.status(220).send({ productoGuardado }); //.send({mensaje: 'Producto guardado'});
 
                         } else {
                             res.status(500).send({ mensaje: 'Error al registrar producto' });
@@ -43,23 +58,30 @@ function agregarProductos(req, res) {
         }
 
     } else {
-        return res.status(500).send({ mensaje: 'Soloa la empresa puede registrar empleados' });
+        return res.status(500).send({ mensaje: 'Solo la empresa puede registrar empleados' });
     }
 }
 
-function obtenerProductos() {
+// EDITAR PRODUCTOS
+function editarProductos(req, res) {
+    var idProducto = req.params.idProducto;
+  
+    var datos = req.body;
 
-    Producto.find({ empresa: req.user.sub }, (err, productoEncontrados) => {
-        if (err) return res.status(500).send({ mensaje: 'error en la peticion' });
-        if (!productoEncontrados) return res.status(500).send({ mensaje: 'Aun no hay empleados' });
+    Producto.findByIdAndUpdate({ _id: idProducto }, datos, { new: true }, (error, productoEditado) => {
 
-        return res.status(200).send({ productoEncontrados });
-    });
+        if (error) return res.status(500).send({ Error: "Error en la peticion." });
 
-}
+        return res.status(200).send({ PRODUCTOS: productoEditado });
+      }
+    );
+  }
+
+
 
 
 module.exports = {
     agregarProductos,
     obtenerProductos,
+    editarProductos,
 }

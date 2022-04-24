@@ -2,24 +2,16 @@
 const Sucursales = require('../models/sucursales.model');
 
 // Obtener Sucursales
+
 function ObtenerSucursales(req, res) {
 
-    if (req.user.rol !== "ROL_EMPRESA") {
-        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
-    }
+  Sucursales.find({ idEmpresa: req.user.sub }, (err, sucursalEmpresaEncontrada) => {
 
-    Sucursales.find({ idEmpresa: req.user.sub }, (error, encontrarSucursales) => {
+    return res.status(200).send({ Sucursales: sucursalEmpresaEncontrada })
+  })
 
-        if (error) return res.status(500).send({ error: "Error para ver las sucursales" });
+}
 
-        if (encontrarSucursales.length == 0)
-
-          return res.status(500).send({ error: "No posee ninguna sucursal" });
-
-        return res.status(200).send({ SUCURSALES: encontrarSucursales});
-      }
-    ).populate("empresa");
-  }
 
 // Obtener Sucursales Id
 function ObtenerSucursalesId(req, res){
