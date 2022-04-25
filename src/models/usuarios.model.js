@@ -3,10 +3,11 @@ const Schema = mongoose.Schema;
 
 const UsuarioSchema = Schema({
     
-    nombre: String,
-    apellido: String,
-    email: String,
+    usuario: String,
+    empresa: String,
+    tipoEmpresa: String,
     password: String,
+    rol: String
     
 });
 
