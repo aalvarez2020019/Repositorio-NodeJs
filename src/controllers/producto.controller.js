@@ -140,7 +140,7 @@ function EditarProductos(req, res) {
       if (productoEliminado == 0)
 
         return res.status(500).send({ Error: "El producto  no existe." });
-        return res.status(200).send({ Producto_eliminado: productoEliminado });
+        return res.status(200).send({ PRODUCTOS: productoEliminado });
 
     });
   }
