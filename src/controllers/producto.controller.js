@@ -1,15 +1,64 @@
-var Producto = require('../models/productos.model');
+var Productos = require('../models/productos.model');
 var fs = require('fs');
 var path = require('path');
+
+// STOCK MAYOR
+
+function StockMayor(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
+    Productos.find({ idEmpresa: req.user.sub },(err, productoEncontrado) => {
+
+        if (err) return res.status(404).send({ mensaje: "No se encuentra el producto" });
+        return res.status(200).send({ PRODUCTOS: productoEncontrado });
+      }
+    ).sort({stock: -1})
+  
+  }
+
+// STOCK MENOR
+function StockMenor(req, res) {
+
+    Productos.find({ idEmpresa: req.user.sub }, (err, productoEncontrado) => {
+        if (err) return res.status(404).send({ mensaje: "No se encuentra el producto" });
+        return res.status(200).send({ PRODUCTOS: productoEncontrado });
+      }
+
+    ).sort({stock: 1})
+  
+  }
+  
 
 // OBTENER PRODUCTOS
 function obtenerProductos(req, res) {
 
-    Producto.find({ empresa: req.user.sub }, (err, sucursalEmpresaEncontrada) => {
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
+    Productos.find({ empresa: req.user.sub }, (err, productosEmpresasEncontrados) => {
   
-      return res.status(200).send({ Sucursales: sucursalEmpresaEncontrada })
+      return res.status(200).send({ PRODUCTOS: productosEmpresasEncontrados})
     })
   
+  }
+
+function obtenerProductosId(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
+    var idProd = req.params.idProducto;
+
+    Productos.findById({ _id: idProd }, (error, productoEncontrado) => {
+      if (error) return res.status(500).send({ error: "Error al obtener los productos" });
+      return res.status(200).send({ Producto: productoEncontrado });
+    });
+
   }
 
 // AGREGAR PRODUCTOS
@@ -25,16 +74,15 @@ function agregarProductos(req, res) {
 
     if (req.user.rol === 'ROL_EMPRESA') {
 
-        if (params.nombre) {
-            var productoModel = new Producto();
-            productoModel.nombre = params.nombre;
+        if (params.nombreProducto) {
+            var productoModel = new Productos();
+            productoModel.nombreProducto = params.nombreProducto;
             productoModel.nombreProveedor = params.nombreProveedor;
             productoModel.stock = params.stock;
-            productoModel.cantidadVendida = 0;
             productoModel.empresa = empresaID;
 
-            Producto.find({
-                nombre: params.nombre,
+            Productos.find({
+                nombreProducto: params.nombreProducto,
                 empresa: req.user.sub
             }).exec((err, productoNoEncontrado) => {
                 if (err) return console.log({ mensaje: 'Error en la peticion' });
@@ -63,25 +111,50 @@ function agregarProductos(req, res) {
 }
 
 // EDITAR PRODUCTOS
-function editarProductos(req, res) {
+function EditarProductos(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
     var idProducto = req.params.idProducto;
-  
     var datos = req.body;
 
-    Producto.findByIdAndUpdate({ _id: idProducto }, datos, { new: true }, (error, productoEditado) => {
+    Productos.findByIdAndUpdate( { _id: idProducto }, datos, { new: true }, (error, productoEditado) => {
 
-        if (error) return res.status(500).send({ Error: "Error en la peticion." });
+        if (error) return res.status(500).send({ error: "Error en la peticion" });
 
         return res.status(200).send({ PRODUCTOS: productoEditado });
       }
     );
   }
 
+  // ELIMINAR PRODUCTOS 
+  function EliminarProductos(req, res) {
+    var idProd = req.params.idProducto;
+  
+    Productos.findByIdAndDelete(idProd, (error, productoEliminado) => {
+
+      if (error) return res.status(500).send({ Error: "Error en la peticion para eliminar." });
+
+      if (productoEliminado == 0)
+
+        return res.status(500).send({ Error: "El producto  no existe." });
+        return res.status(200).send({ Producto_eliminado: productoEliminado });
+
+    });
+  }
+
+  
 
 
 
 module.exports = {
+    StockMayor,
+    StockMenor,
     agregarProductos,
     obtenerProductos,
-    editarProductos,
+    EditarProductos,
+    EliminarProductos,
+    obtenerProductosId
 }

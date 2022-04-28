@@ -3,11 +3,10 @@ var Schema = mongoose.Schema;
 
 var ProductoSchema = Schema({
     
-    nombre: String,
+    nombreProducto: String,
     empresa: { type: Schema.ObjectId, ref: 'Empresas' },
     nombreProveedor: String,
     stock: Number,
-    cantidadVendida: Number,
 });
 
 module.exports = mongoose.model('Productos', ProductoSchema)
