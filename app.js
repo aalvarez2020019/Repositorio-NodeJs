@@ -7,7 +7,6 @@ var app = express();
 const UsuarioRutas = require('./src/routes/usuario.routes');
 const SucursalRutas = require('./src/routes/sucursales.routes');
 const ProductosRutas = require('./src/routes/productos.routes');
-const ProductosSucursalesRutas = require('./src/routes/productosSucursales.routes');
 
 // const ProductosSucursalesRutas = require('./src/routes/productosSucursales.routes')
 
@@ -19,7 +18,7 @@ app.use(express.json());
 app.use(cors());
 
 // CARGA DE RUTAS localhost:3000/api/obtenerProductos
-app.use('/api',  UsuarioRutas, SucursalRutas, ProductosRutas, ProductosSucursalesRutas);
+app.use('/api',  UsuarioRutas, SucursalRutas, ProductosRutas);
 
 
 module.exports = app;
