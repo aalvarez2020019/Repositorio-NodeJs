@@ -7,6 +7,7 @@ var ProductoSchema = Schema({
     empresa: { type: Schema.ObjectId, ref: 'Empresas' },
     nombreProveedor: String,
     Stock: Number,
+    
 });
 
 module.exports = mongoose.model('Productos', ProductoSchema)
