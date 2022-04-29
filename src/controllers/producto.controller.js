@@ -15,7 +15,7 @@ function StockMayor(req, res) {
         if (err) return res.status(404).send({ mensaje: "No se encuentra el producto" });
         return res.status(200).send({ PRODUCTOS: productoEncontrado });
       }
-    ).sort({stock: -1})
+    ).sort({Stock: -1})
   
   }
 
@@ -27,7 +27,7 @@ function StockMenor(req, res) {
         return res.status(200).send({ PRODUCTOS: productoEncontrado });
       }
 
-    ).sort({stock: 1})
+    ).sort({Stock: 1})
   
   }
   
@@ -78,7 +78,7 @@ function agregarProductos(req, res) {
             var productoModel = new Productos();
             productoModel.nombreProducto = params.nombreProducto;
             productoModel.nombreProveedor = params.nombreProveedor;
-            productoModel.stock = params.stock;
+            productoModel.Stock = params.Stock;
             productoModel.empresa = empresaID;
 
             Productos.find({

@@ -7,6 +7,7 @@ var app = express();
 const UsuarioRutas = require('./src/routes/usuario.routes');
 const SucursalRutas = require('./src/routes/sucursales.routes');
 const ProductosRutas = require('./src/routes/productos.routes');
+// const ProductosSucursalesRutas = require('./src/routes/productosSucursales.routes')
 
 // MIDDLEWARES -> INTERMEDIARIOS
 app.use(express.urlencoded({ extended: false }));
