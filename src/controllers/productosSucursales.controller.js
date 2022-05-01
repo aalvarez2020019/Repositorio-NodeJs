@@ -23,16 +23,66 @@ function verProductosPorSucursales(req, res) {
     )
   }
 
- // Ver todos los productos
- function ProductosSucursales(req, res) {
 
-    ProductoPorSucursal.find({ idEmpresa: req.user.sub }, (err, productoEncontrado) => {
-  
-      return res.status(200).send({ PRODUCTOS: productoEncontrado })
 
-    })
-  
+
+// Ordenar por stock mayor por el id
+function StockSucursalMayor(req, res) {
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
   }
+
+  const idSucur = req.params.idSucursal
+
+  ProductoPorSucursal.find( { idSucursal: idSucur, idEmpresa: req.user.sub }, (err, productoEncontrado) => {
+
+      if (err)return res.status(404).send({ mensaje: "No se encontro el producto" });
+
+      return res.status(200).send({ PRODUCTOS: productoEncontrado });
+    }
+
+  ).sort({StockSucursal: -1})
+
+}
+
+// Ordenar por stock menor por el id
+function StockSucursalMenor(req, res) {
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  } 
+
+  const idSucur = req.params.idSucursal
+
+  ProductoPorSucursal.find({ idSucursal: idSucur, idEmpresa: req.user.sub }, (err, productoEncontrado) => {
+
+      if (err)return res.status(404).send({ mensaje: "No se encontro el producto" });
+      return res.status(200).send({ PRODUCTOS: productoEncontrado });
+    }
+  ).sort({StockSucursal: 1})
+
+}
+
+// Productos más vendido
+function ProductoMasVendido(req, res) {
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
+
+  const idSucur = req.params.idSucursal;
+
+  ProductoPorSucursal.find({idSucursal: idSucur, idEmpresa: req.user.sub }, (err, productoEncontrado) => {
+
+      if (err) return res.status(404).send({ mensaje: "No se encontro el producto" });
+
+      return res.status(200).send({ PRODUCTOS: productoEncontrado });
+    }
+
+  ).sort({CantidadVendida: -1})
+
+}
 
 
 
@@ -211,7 +261,10 @@ function agregarProductosPorSucursales(req, res) {
     agregarProductosPorSucursales,
     VentaProductoSucursal,
     verProductosPorSucursales,
-    ProductosSucursales
+    StockSucursalMayor,
+    StockSucursalMenor,
+    ProductoMasVendido,
+
   }
 
 
