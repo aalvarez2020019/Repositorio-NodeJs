@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 const ProductosSurcursalesSchema = Schema({
 
   NombreProductoSucursal: String,
-  StockSurcursal: Number,
+  StockSucursal: Number,
   CantidadVendida: Number,
 
-  idSurcursal: { type: Schema.Types.ObjectId, ref: "Sucursales" },
+  idSucursal: { type: Schema.Types.ObjectId, ref: "Sucursales" },
 
 });
 
