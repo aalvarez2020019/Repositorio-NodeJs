@@ -138,6 +138,62 @@ function ObtenerEmpresasId(req, res) {
     }
   } 
 
+  // REGISTRAR EMPRESAS AGAIN
+  function registrarEmpresasAdmin(req, res) {
+      
+    
+      
+    var parametros = req.body;
+
+    var empresasModel = new Usuarios();
+
+    if (req.user.rol !== "ROL_ADMIN") {
+      return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
+    }
+    
+    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.password) {
+
+      empresasModel.usuario = parametros.usuario;
+      empresasModel.empresa = parametros.empresa;
+      empresasModel.tipoEmpresa = parametros.tipoEmpresa;
+      empresasModel.password = parametros.password;
+      empresasModel.rol = "ROL_EMPRESA";
+  
+      Usuarios.find(
+        { empresa: { $regex: parametros.empresa, $options: "i" } },
+
+        (error, empresaHallada) => {
+
+          if (empresaHallada.length == 0) {
+
+            bcrypt.hash(parametros.password, null, null, (error, passwordEncriptada) => {
+
+                empresasModel.password = passwordEncriptada;
+
+                empresasModel.save((error, empresaAgregada) => {
+                  if (error)
+                    return res.status(500).send({ Error: "Error en la peticion." });
+                  if (!empresaAgregada)
+                    return res.status(404).send({Error: "No se puede crear la empresa"});
+
+                  return res.status(200).send({ EMPRESA: empresaAgregada });
+
+                });
+              }
+            );
+
+          } else {
+            return res.status(500).send({ Error: "Ya existe la empresa" });
+          }
+        }
+
+      );
+
+    } else {
+      return res.status(500).send({ Error: "Se deben llenar todos los campos" });
+    }
+  } 
+
   // LOGIN
   function Login(req, res) {
 
@@ -233,6 +289,7 @@ module.exports = {
     EditarEmpresa,
     EliminarEmpresas,
     obtenerEmpresas,
-    ObtenerEmpresasId
+    ObtenerEmpresasId,
+    registrarEmpresasAdmin
 
 }

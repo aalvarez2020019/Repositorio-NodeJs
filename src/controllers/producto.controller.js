@@ -56,7 +56,7 @@ function obtenerProductosId(req, res) {
 
     Productos.findById({ _id: idProd }, (error, productoEncontrado) => {
       if (error) return res.status(500).send({ error: "Error al obtener los productos" });
-      return res.status(200).send({ Producto: productoEncontrado });
+      return res.status(200).send({ PRODUCTOS: productoEncontrado });
     });
 
   }

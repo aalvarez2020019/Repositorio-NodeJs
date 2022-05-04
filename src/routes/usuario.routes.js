@@ -13,6 +13,10 @@ api.get('/obtenerEmpresasId/:idEmpresa', md_autenticacion.Auth, usuarioControlle
 api.post('/login', usuarioController.Login);
 // REGISTRAR
 api.post('/registro', usuarioController.registrarEmpresas);
+
+// ADMINISTRADOR REGISTRAR
+api.post('/registrarAdmin', md_autenticacion.Auth, usuarioController.registrarEmpresasAdmin);
+
 // EDITAR
 api.put('/editarEmpresa/:idUsuario', md_autenticacion.Auth, usuarioController.EditarEmpresa);
 // ELIMINAR
