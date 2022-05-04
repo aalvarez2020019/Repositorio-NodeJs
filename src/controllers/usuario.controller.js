@@ -53,7 +53,7 @@ function ObtenerEmpresasId(req, res) {
 
     var modeloUsuario = new Usuarios();
   
-    Usuarios.find({ email: "SuperAdmin" }, (err, usuarioEncontrado) => {
+    Usuarios.find({ usuario: "SuperAdmin" }, (err, usuarioEncontrado) => {
 
       if (usuarioEncontrado.length > 0) {
 
