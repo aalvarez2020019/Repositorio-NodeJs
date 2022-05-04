@@ -9,7 +9,7 @@ api.get('/OrdenarStockMenor', md_autenticacion.Auth, productoController.StockMen
 api.post('/agregarProductos', md_autenticacion.Auth, productoController.agregarProductos);
 api.get('/obtenerProductos', md_autenticacion.Auth, productoController.obtenerProductos);
 api.put("/editarProductos/:idProducto", md_autenticacion.Auth, productoController.EditarProductos);
-api.delete('/eliminarProductos/:idProducto', md_autenticacion.Auth, productoController.EditarProductos);
+api.delete('/eliminarProductos/:idProducto', md_autenticacion.Auth, productoController.EliminarProductos);
 api.get('/obtenerProductosId/:idProducto', md_autenticacion.Auth, productoController.obtenerProductosId);
 
 
