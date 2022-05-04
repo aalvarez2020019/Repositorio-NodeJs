@@ -62,6 +62,7 @@ function ObtenerEmpresasId(req, res) {
         modeloUsuario.usuario = "SuperAdmin";
         modeloUsuario.empresa = "SuperAdmin";
         modeloUsuario.tipoEmpresa = "SuperAdmin";
+        modeloUsuario.municipio = "SuperAdmin";
         modeloUsuario.rol = "ROL_ADMIN";
   
         bcrypt.hash("123456", null, null, (err, passwordEncriptada) => {
@@ -95,11 +96,12 @@ function ObtenerEmpresasId(req, res) {
 
    
 
-    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.password) {
+    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.municipio && parametros.password) {
 
       empresasModel.usuario = parametros.usuario;
       empresasModel.empresa = parametros.empresa;
       empresasModel.tipoEmpresa = parametros.tipoEmpresa;
+      empresasModel.municipio = parametros.municipio;
       empresasModel.password = parametros.password;
       empresasModel.rol = "ROL_EMPRESA";
   
@@ -151,11 +153,12 @@ function ObtenerEmpresasId(req, res) {
       return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
     }
     
-    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.password) {
+    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.municipio && parametros.password) {
 
       empresasModel.usuario = parametros.usuario;
       empresasModel.empresa = parametros.empresa;
       empresasModel.tipoEmpresa = parametros.tipoEmpresa;
+      empresasModel.municipio = parametros.municipio;
       empresasModel.password = parametros.password;
       empresasModel.rol = "ROL_EMPRESA";
   
