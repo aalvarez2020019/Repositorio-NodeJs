@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const ProductosSurcursalesSchema = Schema({
+const ProductosSucursalesSchema = Schema({
 
   NombreProductoSucursal: String,
   StockSucursal: Number,
@@ -11,4 +11,4 @@ const ProductosSurcursalesSchema = Schema({
 
 });
 
-module.exports = mongoose.model("ProductosSurcursales", ProductosSurcursalesSchema);
+module.exports = mongoose.model("ProductosSucursales", ProductosSucursalesSchema);

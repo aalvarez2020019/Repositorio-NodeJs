@@ -194,7 +194,7 @@ function agregarProductosPorSucursales(req, res) {
   const idSucur = req.params.idSucursal
 
   if (
-    parametros.ProductoSucursal && parametros.StockVenta
+    parametros.NombreProductoSucursal && parametros.StockSucursal
 
   ) {
 
@@ -203,30 +203,32 @@ function agregarProductosPorSucursales(req, res) {
       if (!sucursalEmpresaEncontrada) return res.status(404).send({ mensaje: "No se encuentra la sucursal, intentelo de nuevo" });
       if (err) return res.status(404).send({ mensaje: "No se encuentra la sucursal, intentelo de nuevo" });
 
-      ProductoPorSucursal.findOne({ NombreProductoSucursal: parametros.ProductoSucursal, idSucursal: sucursalEmpresaEncontrada.id }, (err, EncontrarProductoSucursal) => {
+      ProductoPorSucursal.findOne({ NombreProductoSucursal: parametros.NombreProductoSucursal, 
+        idSucursal: sucursalEmpresaEncontrada.id }, (err, EncontrarProductoSucursal) => {
 
         // Reglas del stock
 
         if (err) return res.status(404).send({ mensaje: "En este producto no se encuentran sucursales" });
 
-        if (parametros.StockVenta <= 0) {
+        if (parametros.StockSucursal <= 0) {
           return res.status(404).send({ mensaje: "Al parecer este tipo de formato es incorrecto" });
         }
 
-        if (parametros.StockVenta > EncontrarProductoSucursal.StockSucursal) {
+        if (parametros.StockSucursal > EncontrarProductoSucursal.StockSucursal) {
 
           return res.status(404).send({ mensaje: "No hay stock, intentelo de nuevo" });
         }
 
         const data = {
 
-        StockSucursal: EncontrarProductoSucursal.StockSucursal, CantidadVendida: EncontrarProductoSucursal.CantidadVendida
+        StockSucursal: EncontrarProductoSucursal.StockSucursal, 
+        CantidadVendida: EncontrarProductoSucursal.CantidadVendida
 
         }
 
-        data.StockSucursal = EncontrarProductoSucursal.StockSucursal - parametros.StockVenta
+        data.StockSucursal = EncontrarProductoSucursal.StockSucursal - parametros.StockSucursal
         
-        data.CantidadVendida = parseFloat(data.CantidadVendida)  + parseFloat(parametros.StockVenta) 
+        data.CantidadVendida = parseFloat(data.CantidadVendida)  + parseFloat(parametros.StockSucursal) 
 
         if (EncontrarProductoSucursal == null) {
 
@@ -240,7 +242,7 @@ function agregarProductosPorSucursales(req, res) {
 
             if (err) return res.status(404).send({ mensaje: "No se encontro el producto" });
 
-            return res.status(404).send({ PRODUCTOS_SUCURSALES: ModificarStock });
+            return res.status(404).send({ PRODUCTOS: ModificarStock });
 
           })
         }
