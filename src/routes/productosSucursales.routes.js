@@ -4,11 +4,11 @@ const md_autenticacion = require('../middlewares/autenticacion');
 
 const api = express.Router();
 
-// Ver productos por sucursales Id
-api.get('/VerProductosPorSucursalesId/:idSucursal', md_autenticacion.Auth, productoSucursalController.verProductosPorSucursales);
+// Ver por el Id de la sucursal
+api.get('/VerProductosPorSucursalesId/:idSucursal', md_autenticacion.Auth, productoSucursalController.verPoridSucursal);
 
-// Productos por sucursales vista todos
-// api.get('/productosSucursales', md_autenticacion.Auth, productoSucursalController.ProductosSucursales);
+// Ver por el Id del producto
+api.get('/VerProductosPorProductosId/:idProducto', md_autenticacion.Auth, productoSucursalController.verPoridProducto);
 
 // Stock Sucursal Mayor por el id de la sucursal
 api.get('/StockSucursalMayor/:idSucursal', md_autenticacion.Auth, productoSucursalController.StockSucursalMayor);
