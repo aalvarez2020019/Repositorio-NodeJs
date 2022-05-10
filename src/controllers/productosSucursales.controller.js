@@ -259,7 +259,7 @@ function agregarProductosPorSucursales(req, res) {
 
             if (err) return res.status(404).send({ mensaje: "No se encontro el producto" });
 
-            return res.status(404).send({ PRODUCTOS: ModificarStock });
+            return res.status(200).send({ PRODUCTOS: ModificarStock });
 
           })
         }
