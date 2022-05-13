@@ -153,14 +153,15 @@ function ObtenerEmpresasId(req, res) {
       return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
     }
     
-    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.municipio && parametros.password) {
+    if (parametros.usuario && parametros.empresa && parametros.tipoEmpresa && parametros.municipio && parametros.password
+      && parametros.rol) {
 
       empresasModel.usuario = parametros.usuario;
       empresasModel.empresa = parametros.empresa;
       empresasModel.tipoEmpresa = parametros.tipoEmpresa;
       empresasModel.municipio = parametros.municipio;
       empresasModel.password = parametros.password;
-      empresasModel.rol = "ROL_EMPRESA";
+      empresasModel.rol = parametros.rol;
   
       Usuarios.find(
         { empresa: { $regex: parametros.empresa, $options: "i" } },

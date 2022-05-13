@@ -16,11 +16,16 @@ function StockMayor(req, res) {
         return res.status(200).send({ PRODUCTOS: productoEncontrado });
       }
     ).sort({Stock: -1})
+
   
   }
 
 // STOCK MENOR
 function StockMenor(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
 
     Productos.find({ idEmpresa: req.user.sub }, (err, productoEncontrado) => {
         if (err) return res.status(404).send({ mensaje: "No se encuentra el producto" });
