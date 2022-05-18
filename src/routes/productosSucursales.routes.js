@@ -26,5 +26,7 @@ api.put('/EnviarProductosSucursales/:idSucursal', md_autenticacion.Auth, product
 // Venta
 api.put('/VentaProductosSucursales/:idSucursal', md_autenticacion.Auth, productoSucursalController.VentaProductoSucursal);
 
+// Buscar producto sucursal nombre
+api.get('/buscarPorNombre/:NombreProductoSucursal', md_autenticacion.Auth, productoSucursalController.buscarPorNombre);
 
 module.exports = api;

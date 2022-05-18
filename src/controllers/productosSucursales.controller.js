@@ -3,6 +3,23 @@ var ProductosEmpresas = require('../models/productos.model');
 var Sucursales = require('../models/sucursales.model');
 var ProductoPorSucursal = require('../models/productosSucursales.model');
 
+
+// BUSCAR POR NOMBRE
+function buscarPorNombre(req, res){
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
+
+  var NombreProductoSucursal = req.params.NombreProductoSucursal;
+  
+        ProductoPorSucursal.find({NombreProductoSucursal: {$regex: NombreProductoSucursal, $options:['i','x']}}, (err, productoEncontrado) =>{
+          if(err) return res.status(500).send({ mensaje: "Error en la peticion"});
+           if(!productoEncontrado) return res.status(404).send({mensaje : "No se encontraron productos"});
+           return res.status(200).send({ Productos : productoEncontrado});
+       })
+}
+
 // Ver productos por el id de la sucursal
 function verPoridSucursal(req, res) {
 
@@ -284,7 +301,7 @@ function agregarProductosPorSucursales(req, res) {
     StockSucursalMenor,
     ProductoMasVendido,
     verPoridProducto,
-
+    buscarPorNombre
   }
 
 

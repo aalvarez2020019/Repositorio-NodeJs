@@ -12,11 +12,16 @@ api.put("/editarProductos/:idProducto", md_autenticacion.Auth, productoControlle
 api.delete('/eliminarProductos/:idProducto', md_autenticacion.Auth, productoController.EliminarProductos);
 api.get('/obtenerProductosId/:idProducto', md_autenticacion.Auth, productoController.obtenerProductosId);
 
+// Buscar por nombre
+api.get('/buscarProductoNombre/:nombreProducto', md_autenticacion.Auth, productoController.BuscarPorNombre);
 
+// Buscar por proveedor
+api.get('/buscarProductoProveedor/:nombreProveedor', md_autenticacion.Auth, productoController.BuscarProductoProveedor);
 
 /*
 api.get('/empresas/:idEmpresa', empresaControlador.ObtenerEmpresasId);
 api.put('/editarEmpresas/:idEmpresa', empresaControlador.EditarEmpresas);
 api.delete('/eliminarEmpresas/:idEmpresa', empresaControlador.EliminarEmpresas);
 */
+
 module.exports = api;

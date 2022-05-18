@@ -2,6 +2,40 @@ var Productos = require('../models/productos.model');
 var fs = require('fs');
 var path = require('path');
 
+// BUSCAR PRODUCTOS POR NOMBRE
+function BuscarPorNombre(req,res){
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
+
+  var nombreProducto = req.params.nombreProducto; 
+
+  Productos.find({nombreProducto: {$regex:nombreProducto,$options:'i'}}, (err, nombreProductoEncontrado)=>{
+
+      if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+      if (!nombreProductoEncontrado) return res.status(404).send({ mensaje: 'No se obtuvieron los datos' });
+      return res.status(200).send({ Productos: nombreProductoEncontrado });
+  })
+}
+
+// BUSCAR PRODUCTOS POR PROVEEDOR
+function BuscarProductoProveedor(req,res){
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
+
+  var nombreProveedor = req.params.nombreProveedor;
+
+  Productos.find({nombreProveedor: {$regex:nombreProveedor,$options:'i'}}, (err, proveedorProductoEncontrado)=>{
+
+      if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+      if (!proveedorProductoEncontrado) return res.status(404).send({ mensaje: 'No se obtuvieron los datos' });
+      return res.status(200).send({ Productos: proveedorProductoEncontrado });
+  })
+}
+
 // STOCK MAYOR
 
 function StockMayor(req, res) {
@@ -166,5 +200,7 @@ module.exports = {
     obtenerProductos,
     EditarProductos,
     EliminarProductos,
-    obtenerProductosId
+    obtenerProductosId,
+    BuscarPorNombre,
+    BuscarProductoProveedor
 }
