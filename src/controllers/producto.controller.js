@@ -136,6 +136,11 @@ function EditarProductos(req, res) {
 
   // ELIMINAR PRODUCTOS 
   function EliminarProductos(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+      return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
     var idProd = req.params.idProducto;
   
     Productos.findByIdAndDelete(idProd, (error, productoEliminado) => {

@@ -15,6 +15,9 @@ api.delete('/eliminarSucursales/:idSucursal', md_autenticacion.Auth, sucursalesC
 // OBTENER SUCURSALES
 api.get("/obtenerSucursales", md_autenticacion.Auth, sucursalesControlador.ObtenerSucursales);
 
+// OBTENER SUCURSALES ADMIN
+api.get('/SurcursalesAdmin/:idEmpresa', md_autenticacion.Auth, sucursalesControlador.ObtenerSucursalesAdmin);
+
 // OBTENER SUCURSALES ID
 api.get('/obtenerIdSucursal/:idSucursal', md_autenticacion.Auth, sucursalesControlador.ObtenerSucursalesId);
 

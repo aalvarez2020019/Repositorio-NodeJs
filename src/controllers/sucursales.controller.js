@@ -5,6 +5,10 @@ const Sucursales = require('../models/sucursales.model');
 
 function ObtenerSucursales(req, res) {
 
+  if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
+
   Sucursales.find({ idEmpresa: req.user.sub }, (err, sucursalEmpresaEncontrada) => {
 
     return res.status(200).send({ Sucursales: sucursalEmpresaEncontrada })
@@ -12,9 +16,30 @@ function ObtenerSucursales(req, res) {
 
 }
 
+// OBTENER SUCURSALES ADMIN
+function ObtenerSucursalesAdmin(req, res) {
+
+  if (req.user.rol !== "ROL_ADMIN") {
+    return res.status(500).send({ mensaje: "Solo el administrador puede ver" });
+  }
+
+  const idEmpresa = req.params.idEmpresa;
+
+  Sucursales.find({ idEmpresa: idEmpresa },(err, sucursalEmpresaEncontrada) => {
+
+      return res.status(200).send({ Sucursales: sucursalEmpresaEncontrada });
+    }
+  );
+
+}
+
 
 // Obtener Sucursales Id
 function ObtenerSucursalesId(req, res){
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
 
     var idSucu = req.params.idSucursal;
  
@@ -104,7 +129,7 @@ function EliminarSucursales(req, res) {
 
 
 module.exports={
- 
+    ObtenerSucursalesAdmin,
     ObtenerSucursales,
     ObtenerSucursalesId,
     AgregarSucursales,
