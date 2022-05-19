@@ -58,6 +58,19 @@ function verPoridProducto(req, res) {
   );
 }
 
+function ObtenerProductos(req, res) {
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+        return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+  }
+
+  ProductoPorSucursal.find({ idEmpresa: req.user.sub }, (err, sucursalEmpresaEncontrada) => {
+
+    return res.status(200).send({ PRODUCTOS: sucursalEmpresaEncontrada })
+  })
+
+}
+
 
 
 // Ordenar por stock mayor por el id
@@ -67,9 +80,8 @@ function StockSucursalMayor(req, res) {
     return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
   }
 
-  const idSucur = req.params.idSucursal
 
-  ProductoPorSucursal.find( { idSucursal: idSucur, idEmpresa: req.user.sub }, (err, productoEncontrado) => {
+  ProductoPorSucursal.find({ idEmpresa: req.user.sub }, (err, productoEncontrado) => {
 
       if (err)return res.status(404).send({ mensaje: "No se encontro el producto" });
 
@@ -87,13 +99,12 @@ function StockSucursalMenor(req, res) {
     return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
   } 
 
-  const idSucur = req.params.idSucursal
-
-  ProductoPorSucursal.find({ idSucursal: idSucur, idEmpresa: req.user.sub }, (err, productoEncontrado) => {
+  ProductoPorSucursal.find({ idEmpresa: req.user.sub }, (err, productoEncontrado) => {
 
       if (err)return res.status(404).send({ mensaje: "No se encontro el producto" });
       return res.status(200).send({ PRODUCTOS: productoEncontrado });
     }
+
   ).sort({StockSucursal: 1})
 
 }
@@ -216,6 +227,26 @@ function agregarProductosPorSucursales(req, res) {
   
   }
 
+
+  // Eliminar productos de sucursales
+  function EliminarProductoSucursales(req, res) {
+
+    if (req.user.rol !== "ROL_EMPRESA") {
+      return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
+    }
+
+    var idProducto = req.params.idProducto;
+
+    
+    ProductoPorSucursal.findOneAndDelete({ _id: idProducto, idEmpresa: req.user.sub }, (err, productoEliminado) => {
+
+            if (err || !productoEliminado) return res.status(404).send({ mensaje: 'No puedes eliminar este producto porque no te pertenece' });
+
+            return res.status(200).send({ PRODUCTOS: productoEliminado });
+        })
+    
+}
+
   // Vender productos por sucursales
   function VentaProductoSucursal(req, res) {
 
@@ -301,7 +332,9 @@ function agregarProductosPorSucursales(req, res) {
     StockSucursalMenor,
     ProductoMasVendido,
     verPoridProducto,
-    buscarPorNombre
+    buscarPorNombre,
+    EliminarProductoSucursales,
+    ObtenerProductos
   }
 
 
