@@ -4,6 +4,50 @@ const Usuarios = require('../models/usuarios.model');
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('../services/jwt');
 
+
+// USUARIO ID ROL EMPRESA
+function RolEmpresaId(req, res) {
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
+  }
+  
+  var idEmpresa = req.params.idEmpresa;
+
+  Usuarios.findById(idEmpresa, (err, empresaEncontrada) => {
+
+      if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
+      if (!empresaEncontrada) return res.status(404).send({ mensaje: 'No se obtienen los datos' });
+
+      return res.status(200).send({ Empresas: empresaEncontrada }
+        );
+  })
+}
+
+// EDITAR POR ROL EMPRESA
+function EditarUsuario(req, res) {
+
+  var idUser = req.params.idUsuario;
+  var parametros = req.body;
+
+  if (req.user.rol !== "ROL_EMPRESA") {
+    return res.status(500).send({ mensaje: "Solo el administrador tiene permisos" });
+  }
+  
+  Usuarios.findByIdAndUpdate(idUser, parametros,{ new: true },(err, editarUsuario) => {
+
+      if (err) return res.status(500).send({ mensaje: "Error en la peticion" });
+
+      if (!editarUsuario) return res.status(403).send({ mensaje: "Error al editar la empresa" });
+
+      return res.status(200).send({ Usuarios: editarUsuario });
+
+    }
+  );
+}
+
+
+
 // OBTENER EMPRESAS
 function obtenerEmpresas(req, res) {
 
@@ -294,6 +338,8 @@ module.exports = {
     EliminarEmpresas,
     obtenerEmpresas,
     ObtenerEmpresasId,
-    registrarEmpresasAdmin
+    registrarEmpresasAdmin,
+    RolEmpresaId,
+    EditarUsuario
 
 }
