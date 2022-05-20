@@ -4,12 +4,15 @@ var Sucursales = require('../models/sucursales.model');
 var ProductoPorSucursal = require('../models/productosSucursales.model');
 
 
-// BUSCAR POR NOMBRE
+// BUSCAR POR NOMBRE ROL EMPRESA
 function buscarPorNombre(req, res){
 
   if (req.user.rol !== "ROL_EMPRESA") {
     return res.status(500).send({ mensaje: "Solo la empresa tiene permisos" });
   }
+
+
+
 
   var NombreProductoSucursal = req.params.NombreProductoSucursal;
   
