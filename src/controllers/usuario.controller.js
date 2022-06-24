@@ -19,7 +19,8 @@ function RolEmpresaId(req, res) {
       if (err) return res.status(500).send({ mensaje: 'Error en la peticion' });
       if (!empresaEncontrada) return res.status(404).send({ mensaje: 'No se obtienen los datos' });
 
-      return res.status(200).send({ Empresas: empresaEncontrada }
+      return res.status(200).send({ Pacientes: empresaEncontrada }
+
         );
   })
 }

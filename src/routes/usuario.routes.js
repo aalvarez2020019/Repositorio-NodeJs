@@ -9,6 +9,7 @@ const api = express.Router();
 api.get('/obtenerEmpresas', md_autenticacion.Auth, usuarioController.obtenerEmpresas);
 // OBTENER EMPRESAS ID
 api.get('/obtenerEmpresasId/:idEmpresa', md_autenticacion.Auth, usuarioController.ObtenerEmpresasId);
+
 // LOGIN
 api.post('/login', usuarioController.Login);
 // REGISTRAR
